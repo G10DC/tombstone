@@ -1,0 +1,14 @@
+{
+  "name": "tombstone",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Dead Code & Asset Bloat Hunter",
+  "main": "lib/tombstone.js",
+  "bin": {
+    "tombstone": "lib/tombstone.js"
+  },
+  "scripts": {
+    "start": "node lib/tombstone.js"
+  },
+  "license": "MIT"
+}

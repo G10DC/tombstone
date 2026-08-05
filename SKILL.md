@@ -35,3 +35,13 @@ Generates `tombstone-pruning-report.md` containing:
 * List of Dead Export Symbols & Unreachable Files
 * Orphaned Package Dependencies
 * Estimated Byte Savings & Cleanup Script
+
+
+---
+
+## ⚡ Spark Breakthrough Enhancement
+
+- **Feature**: **Zero-Risk Dead Asset Cleaner**
+- **Description**: Identifies unreferenced symbols and unused binary assets for pruning.
+- **Synergy**: Integrated with `bonsai` (minimalism) & `smith` (refactoring).
+- **Framework**: Applied via the `spark` 4-Lens Lateral Ideation Engine.

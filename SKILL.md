@@ -27,7 +27,7 @@ graph TD
 
 ### 1. Audit Unused Code & Assets
 ```bash
-node C:/Users/GdC/.gemini/config/skills/tombstone/lib/tombstone.js --dir "."
+node lib/tombstone.js --dir "."
 ```
 
 ### 2. Output

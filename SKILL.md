@@ -1,6 +1,12 @@
 ---
 name: tombstone
-description: Dead Code & Asset Bloat Hunter for large codebases. Builds entry-point reachability graphs to isolate unreachable symbols, unused exports, orphaned dependencies, and deprecated binary assets. Inspired by Knip and Vulture.
+description: >-
+  Dead code and asset bloat hunter. Queries trellis reachability graphs from
+  entry points to isolate unreachable symbols, unused exports, orphaned
+  dependencies, and deprecated binary assets. Use when cleaning up a codebase
+  before release or hunting dead code that inflates bundle size. Never rebuild
+  the reachability graph -- consume trellis output; never delete candidates
+  without forge and smith verification.
 ---
 
 # 🪦 Tombstone

@@ -13,12 +13,12 @@ description: >-
 
 **Dead Code & Asset Bloat Hunter.** Tombstone audits multi-gigabyte codebases to detect unreachable code paths, unused module exports, orphaned npm/cargo dependencies, and legacy binary assets.
 
-## 🎯 Golden Rules
+## Golden Rules
 1. **Entry-Point Root Reachability**: Construct call-graphs starting from declared entry points (`main.go`, `index.ts`, route handlers); symbols with zero reachability path are dead code candidates.
 2. **Export-Import Signature Matrix**: Cross-reference all declared module exports against import AST references across the workspace.
 3. **Safe Pruning Gate**: Flag dead code as candidate sets for verification via `smith` codemods and `forge` test suites before physical deletion.
 
-## 🏗️ Architecture & Pipeline
+## ️ Architecture & Pipeline
 
 ```mermaid
 graph TD
@@ -29,7 +29,7 @@ graph TD
     E --> F[Generate Tombstone Pruning Report]
 ```
 
-## 🚀 Usage Guide
+## Usage Guide
 
 ### 1. Audit Unused Code & Assets
 ```bash
@@ -45,9 +45,19 @@ Generates `tombstone-pruning-report.md` containing:
 
 ---
 
-## ⚡ Spark Breakthrough Enhancement
+## Spark Breakthrough Enhancement
 
 - **Feature**: **Zero-Risk Dead Asset Cleaner**
 - **Description**: Identifies unreferenced symbols and unused binary assets for pruning.
 - **Synergy**: Integrated with `bonsai` (minimalism) & `smith` (refactoring).
 - **Framework**: Applied via the `spark` 4-Lens Lateral Ideation Engine.
+
+
+## When to use
+
+- Primary domain workflow execution as specified in frontmatter description.
+
+
+## When NOT to use
+
+- Tasks outside declared skill scope or handled by specialized sibling skills.

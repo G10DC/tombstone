@@ -3,3 +3,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 *.log
+
+# Enforced by G10DC Pruning
+.ast-cache.json
+.env

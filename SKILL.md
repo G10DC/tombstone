@@ -1,63 +1,48 @@
 ---
 name: tombstone
+status: stub
 description: >-
-  Dead code and asset bloat hunter. Queries trellis reachability graphs from
-  entry points to isolate unreachable symbols, unused exports, orphaned
-  dependencies, and deprecated binary assets. Use when cleaning up a codebase
-  before release or hunting dead code that inflates bundle size. Never rebuild
-  the reachability graph -- consume trellis output; never delete candidates
-  without forge and smith verification.
+  Pure BFS reachability filter over a caller-supplied { symbols, entryPoints,
+  edges } graph -- returns symbols unreachable from the given entry points.
+  Builds no graph itself: reads no filesystem, runs no parser, calls no other
+  skill. Use only if you already have that graph structure in hand and need it
+  filtered. Never rebuild the reachability graph -- consume trellis output; never
+  delete candidates without independent verification.
 ---
 
-# 🪦 Tombstone
+# Tombstone
 
-**Dead Code & Asset Bloat Hunter.** Tombstone audits multi-gigabyte codebases to detect unreachable code paths, unused module exports, orphaned npm/cargo dependencies, and legacy binary assets.
+**BFS reachability filter over a graph the caller provides.** Does not build a graph, read the filesystem, or call `trellis` or any other skill. Given `{ symbols, entryPoints, edges }`, runs breadth-first reachability from `entryPoints` and returns every symbol never reached.
 
-## Golden Rules
-1. **Entry-Point Root Reachability**: Construct call-graphs starting from declared entry points (`main.go`, `index.ts`, route handlers); symbols with zero reachability path are dead code candidates.
-2. **Export-Import Signature Matrix**: Cross-reference all declared module exports against import AST references across the workspace.
-3. **Safe Pruning Gate**: Flag dead code as candidate sets for verification via `smith` codemods and `forge` test suites before physical deletion.
+## What it actually does
+Takes `{ symbols, entryPoints, edges }` as a plain object; fixed-point BFS from `entryPoints`
+following `edges` (`{ from, to }`); returns every symbol never reached. That's the whole
+implementation — no filesystem, no AST parsing, no subprocess calls.
 
-## ️ Architecture & Pipeline
+## The gap that matters
+Nothing in this repo, or any sibling skill installed here, produces the `{ symbols, entryPoints,
+edges }` structure this expects. `trellis` is documented elsewhere as the intended source, but no
+code connects them — no import, no read of a `trellis` output file. Until you build that
+structure yourself, this class has no usable input.
 
-```mermaid
-graph TD
-    A[Workspace Code & Manifests] --> B[Identify Entry Points & Route Handlers]
-    B --> C[Traverse AST Symbol Call-Graph]
-    C --> D[Identify Reachable Symbol Nodes]
-    C --> E[Isolate Unreachable Nodes & Orphaned Assets]
-    E --> F[Generate Tombstone Pruning Report]
+## Usage (library, not a CLI)
+
+```js
+import { TombstoneHunter } from './lib/tombstone.js';
+
+// You must build this graph yourself -- nothing here produces it.
+const graph = { symbols: ['a', 'b', 'c'], entryPoints: ['a'], edges: [{ from: 'a', to: 'b' }] };
+const result = new TombstoneHunter().findDeadCodeCandidates(graph);
+// result.deadCandidates: ['c']  -- unreachable from entryPoints, NOT verified dead
 ```
-
-## Usage Guide
-
-### 1. Audit Unused Code & Assets
-```bash
-node lib/tombstone.js --dir "."
-```
-
-### 2. Output
-Generates `tombstone-pruning-report.md` containing:
-* List of Dead Export Symbols & Unreachable Files
-* Orphaned Package Dependencies
-* Estimated Byte Savings & Cleanup Script
-
-
----
-
-## Spark Breakthrough Enhancement
-
-- **Feature**: **Zero-Risk Dead Asset Cleaner**
-- **Description**: Identifies unreferenced symbols and unused binary assets for pruning.
-- **Synergy**: Integrated with `bonsai` (minimalism) & `smith` (refactoring).
-- **Framework**: Applied via the `spark` 4-Lens Lateral Ideation Engine.
-
 
 ## When to use
 
-- Primary domain workflow execution as specified in frontmatter description.
-
+- You already have a reachability graph in this shape (built by hand or another tool) and want
+  the unreachable-from-entry-points filter applied to it.
 
 ## When NOT to use
 
-- Tasks outside declared skill scope or handled by specialized sibling skills.
+- **Expecting it to scan a codebase on its own** — it has no graph-building step; build or obtain
+  the graph first.
+- **About to delete what it returns** — candidates are unverified; check real usage before deleting.
